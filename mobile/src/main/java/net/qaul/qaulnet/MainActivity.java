@@ -1,18 +1,18 @@
 package net.qaul.qaulnet;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.FrameLayout;
 
-import net.qaul.qaulnet.views.FeedFragment;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 
-public class MainActivity extends AppCompatActivity {
-    FrameLayout frames;
+import net.qaul.qaulnet.views.Pager;
+
+
+public class MainActivity extends AppCompatActivity  implements TabLayout.OnTabSelectedListener {
+    ViewPager pager;
     TabLayout tabs;
 
     @Override
@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        pager = findViewById(R.id.qaul_views);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         tabs = findViewById(R.id.qaul_tabs);
@@ -30,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
         feed.setIcon(R.drawable.ql_feed);
         tabs.addTab(feed);
 
-        TabLayout.Tab msg = tabs.newTab();
-        msg.setText("Messages");
-        msg.setIcon(R.drawable.ql_private_message);
-        tabs.addTab(msg);
+        TabLayout.Tab news = tabs.newTab();
+        news.setText("News");
+        news.setIcon(R.drawable.ql_notification);
+        tabs.addTab(news);
 
         TabLayout.Tab files = tabs.newTab();
         files.setText("Files");
@@ -45,64 +46,34 @@ public class MainActivity extends AppCompatActivity {
         call.setIcon(R.drawable.ql_users);
         tabs.addTab(call);
 
-    }
-}
+        Pager adapter = new Pager(getSupportFragmentManager(), tabs.getTabCount());
+        pager.setAdapter(adapter);
+        tabs.addOnTabSelectedListener(this);
+//        tabs.setupWithViewPager(pager);
 
-////     /*    get the reference of FrameLayout and TabLayout
-//        frames = (FrameLayout) findViewById(R.id.simpleFrameLayout);
-//        tabs = (TabLayout) findViewById(R.id.simpleTabLayout);
-//
-////         Create a new Tab named "First"
-//        TabLayout.Tab firstTab = tabs.newTab();
-//        firstTab.setText("First"); // set the Text for the first Tab
-//        firstTab.setIcon(R.drawable.ic_public_white_24dp); // set an icon for the
-//        tabs.addTab(firstTab);
-//
-//        TabLayout.Tab secondTab = tabs.newTab();
-//        secondTab.setText("Second");
-//        secondTab.setIcon(R.drawable.ic_vpn_key_white_24dp);
-//        tabs.addTab(secondTab);
-//
-//        TabLayout.Tab thirdTab = tabs.newTab();
-//        thirdTab.setText("Third");
-//        thirdTab.setIcon(R.drawable.ic_insert_drive_file_white_24dp);
-//        tabs.addTab(thirdTab);
-//
-//        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//
-//                // get the current selected tab's position and replace the fragment accordingly
-//                Fragment fragment = null;
-//                switch (tab.getPosition()) {
-//                    case 0:
-//                        fragment = new FeedFragment();
-//                        break;
-//                    case 1:
-//                        fragment = new FeedFragment();
-//                        break;
-//                    case 2:
-//                        fragment = new FeedFragment();
-//                        break;
-//                }
-//                FragmentManager fm = getFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ft.replace(R.id.simpleFrameLayout, fragment);
-//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                ft.commit();
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-//    }
-//}
-//*/
+        /* Create an application drawer */
+        new DrawerBuilder().withActivity(this)
+            .withToolbar(myToolbar)
+            .withActionBarDrawerToggle(true)
+            .build();
+    }
+
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        pager.setCurrentItem(tab.getPosition());
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+
+}

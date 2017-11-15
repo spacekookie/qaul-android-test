@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import net.qaul.qaulnet.R;
 
-
-public class FeedFragment extends Fragment {
+public class FilesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,6 +17,6 @@ public class FeedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.feed_view, container, false);
+        return inflater.inflate(R.layout.files_view, container, false);
     }
 }
